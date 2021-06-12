@@ -30,6 +30,6 @@ class GameBase:
             else:
                 print('Ошибка!')
                 self.wrong.play()
-                
+
             AllButtons(self, self.root).cancel_highlight()
             self.result = []

@@ -14,6 +14,9 @@ class Card:
     def __str__(self):
         return f'{self.color}, {self.shape}, {self.fill}, {self.amount}'
 
+class NoCard():
+    def __init__(self):
+        self.card_image = 'no_img'
 
 class GameSet:
     def check_param(self, card_a_param, card_b_param, card_c_param):
@@ -26,10 +29,14 @@ class GameSet:
 
     def check_set(self, card_a, card_b, card_c):
 
-        return self.check_param(card_a.color, card_b.color, card_c.color) and \
-                self.check_param(card_a.shape, card_b.shape, card_c.shape) and\
-                self.check_param(card_a.fill, card_b.fill, card_c.fill) and \
-                self.check_param(card_a.amount, card_b.amount, card_c.amount)
+        if isinstance(card_a, Card) and isinstance(card_b, Card) and \
+         isinstance(card_c, Card):
+            return self.check_param(card_a.color, card_b.color, card_c.color) and \
+                    self.check_param(card_a.shape, card_b.shape, card_c.shape) and\
+                    self.check_param(card_a.fill, card_b.fill, card_c.fill) and \
+                    self.check_param(card_a.amount, card_b.amount, card_c.amount)
+        else:
+            return False
 
 
 class AllCards:
@@ -49,8 +56,13 @@ class AllCards:
     def get_next_card(self):
         """Забирает случайную карту из колоды"""
 
-        random_card_ind = random.randint(0, len(self.game.sequence)-1)
-        return self.game.sequence.pop(random_card_ind)
+        if len(self.game.sequence) > 1:
+            random_card_ind = random.randint(0, len(self.game.sequence)-1)
+            return self.game.sequence.pop(random_card_ind)
+        elif len(self.game.sequence) == 1:
+            return self.game.sequence.pop(0)
+        else:
+            return NoCard()
 
     def fill_open_cards(self):
         """Выложить открытые карты"""
