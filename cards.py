@@ -14,12 +14,16 @@ class Card:
     def __str__(self):
         return f'{self.color}, {self.shape}, {self.fill}, {self.amount}'
 
-class NoCard():
+
+class NoCard:
     def __init__(self):
         self.card_image = 'no_img'
 
+
 class GameSet:
-    def check_param(self, card_a_param, card_b_param, card_c_param):
+
+    @staticmethod
+    def check_param(card_a_param, card_b_param, card_c_param):
         """Проверяет параметр у каждой из карт
         :return: True если у карт параметр либо одинаковый, либо отличается
         """
@@ -28,6 +32,7 @@ class GameSet:
             card_a_param != card_b_param != card_c_param != card_a_param
 
     def check_set(self, card_a, card_b, card_c):
+        """Проверяет корректность сета"""
 
         if isinstance(card_a, Card) and isinstance(card_b, Card) and \
          isinstance(card_c, Card):
@@ -56,11 +61,9 @@ class AllCards:
     def get_next_card(self):
         """Забирает случайную карту из колоды"""
 
-        if len(self.game.sequence) > 1:
+        if len(self.game.sequence) > 0:
             random_card_ind = random.randint(0, len(self.game.sequence)-1)
             return self.game.sequence.pop(random_card_ind)
-        elif len(self.game.sequence) == 1:
-            return self.game.sequence.pop(0)
         else:
             return NoCard()
 
@@ -79,6 +82,7 @@ class AllCards:
         self.get_card_info()
 
     def reshafle(self):
+        """Перетасовать колоду: убирает карты со стола в колоду и выкладыает случайные новые карты"""
 
         self.game.sequence = list(itertools.chain(self.game.sequence,
                                                   self.game.open_cards))
@@ -101,7 +105,7 @@ class AllCards:
                         print('Сет найден: ', first_card_ind, second_card_ind,
                               third_card_ind)
                         self.game.all_sets.append((first_card_ind, second_card_ind,
-                              third_card_ind))
+                                                   third_card_ind))
 
         return bool(self.game.all_sets)
 

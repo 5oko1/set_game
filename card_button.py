@@ -20,7 +20,8 @@ class CardButton(Button):
         else:
             self.game.result.remove(self.card)
         print(*self.game.result)
-        self.game.check_result()
+        if len(self.game.result) == 3:
+            self.game.check_result()
 
     def switch_highlight(self):
         if not self.state:
@@ -41,7 +42,7 @@ class CardButton(Button):
         self.config(image=self.game.all_images[new_img])
 
 
-class AllButtons():
+class AllButtons:
 
     def __init__(self, game, root):
         self.game = game
@@ -92,5 +93,3 @@ class AllButtons():
         for button in self.game.all_buttons:
             button['bg'] = 'SystemButtonFace'
             button.state = False
-
-
