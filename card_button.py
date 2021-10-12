@@ -1,5 +1,6 @@
 from tkinter import Button, Frame
 from cards import AllCards
+import random
 
 
 class CardButton(Button):
@@ -82,7 +83,7 @@ class AllButtons():
     def set_help(self):
         """Добавить подсветку существующего сета"""
 
-        for card_ind in self.game.all_sets[0]:
+        for card_ind in random.choice(self.game.all_sets):
             self.game.all_buttons[card_ind]['bg'] = 'blue'
 
     def cancel_highlight(self):
