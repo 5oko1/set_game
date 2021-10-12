@@ -18,6 +18,5 @@ all_buttons.create_buttons()
 all_cards = AllCards(game_base)
 all_cards.generate_new_sequence()
 all_cards.fill_open_cards()
-all_cards.get_card_info()
 
 root.mainloop()

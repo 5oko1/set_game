@@ -26,7 +26,9 @@ class GameBase:
                 self.correct.play()
                 all_cards.delete_cards_on_table(*self.result)
                 all_cards.fill_open_cards()
-                AllCards(self).get_card_info()
+                # Доработать! В конце игры зациклится
+                while not all_cards.game.all_sets:
+                    all_cards.reshafle()
             else:
                 print('Ошибка!')
                 self.wrong.play()

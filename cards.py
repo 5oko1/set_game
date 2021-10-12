@@ -76,9 +76,7 @@ class AllCards:
                 card.position = card_ind
                 self.game.open_cards[card_ind] = card
 
-        #Доработать! В конце игры зациклится
-        while not self.find_solutions():
-            self.reshafle()
+        self.find_solutions()
         self.get_card_info()
 
     def reshafle(self):
