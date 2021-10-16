@@ -1,4 +1,4 @@
-from tkinter import Button, Frame
+from tkinter import Tk, Button, Frame
 from cards import AllCards
 import random
 
@@ -42,12 +42,21 @@ class CardButton(Button):
         self.config(image=self.game.all_images[new_img])
 
 
-class AllButtons:
+class Interface:
 
-    def __init__(self, game, root):
+    def __init__(self, game):
         self.game = game
-        self.root = root
-        self.all_cards = AllCards(self.game)
+        self.root = self.game.root = self.create_window()
+        self.create_buttons()
+
+    @staticmethod
+    def create_window():
+
+        root = Tk()
+        root.title('Set Game')
+        root.geometry('600x480')
+        root.configure(background='light gray')
+        return root
 
     def create_buttons(self):
 
@@ -72,7 +81,7 @@ class AllButtons:
                                                         master=frame, bd=4))
 
         refresh_btn = Button(self.root, text='Обновить', bd=4, width=10,
-                             height=1, command=self.all_cards.reshafle)
+                             height=1, command=AllCards(self.game).reshafle)
         refresh_btn.pack()
         refresh_btn.place(x=400, y=40)
 
