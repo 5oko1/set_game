@@ -30,10 +30,6 @@ class CardButton(Button):
             self['bg'] = 'SystemButtonFace'
         self.state = not self.state
 
-    def highlight_error(self):
-        self['bg'] = 'SystemButtonFace'
-        self['bg'] = 'red'
-
     def set_card(self, card):
         self.card = card
         self.change_img(card.card_image)
@@ -93,6 +89,7 @@ class Interface:
     def set_help(self):
         """Добавить подсветку существующего сета"""
 
+        self.cancel_help_highlight()
         for card_ind in random.choice(self.game.all_sets):
             self.game.all_buttons[card_ind]['bg'] = 'blue'
 
@@ -102,3 +99,11 @@ class Interface:
         for button in self.game.all_buttons:
             button['bg'] = 'SystemButtonFace'
             button.state = False
+
+    def cancel_help_highlight(self):
+        """Убрать подсветку у карт с обводкой помощи"""
+
+        for button in self.game.all_buttons:
+            if button['bg'] == 'blue':
+                button['bg'] = 'SystemButtonFace'
+                button.state = False
