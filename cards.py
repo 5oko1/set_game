@@ -49,7 +49,7 @@ class AllCards:
         self.game = game
 
     def generate_new_sequence(self):
-        """Возвращает последовательность из всех карт в колоде"""
+        """Возвращает случайную последовательность из всех карт в колоде"""
 
         for color in 'red', 'green', 'blue':
             for shape in 'circle', 'square', 'wave':
@@ -58,12 +58,13 @@ class AllCards:
                         self.game.sequence.append(Card(color, shape,
                                                        fill, amount))
 
+        random.shuffle(self.game.sequence)
+
     def get_next_card(self):
         """Забирает случайную карту из колоды"""
 
         if len(self.game.sequence) > 0:
-            random_card_ind = random.randint(0, len(self.game.sequence)-1)
-            return self.game.sequence.pop(random_card_ind)
+            return self.game.sequence.pop()
         else:
             return NoCard()
 
