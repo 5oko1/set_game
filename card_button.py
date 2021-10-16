@@ -1,4 +1,4 @@
-from tkinter import Tk, Button, Frame, messagebox
+from tkinter import Tk, Button, Frame, messagebox, StringVar, Label
 from cards import AllCards
 import random
 
@@ -43,6 +43,7 @@ class Interface:
     def __init__(self, game):
         self.game = game
         self.root = self.game.root = self.create_window()
+        self.score_var = StringVar()
         self.create_buttons()
 
     @staticmethod
@@ -77,7 +78,7 @@ class Interface:
                                                         master=frame, bd=4))
 
         refresh_btn = Button(self.root, text='Обновить', bd=4, width=10,
-                             height=1, command=AllCards(self.game).reshuffle)
+                             height=1, command=self.refresh)
         refresh_btn.pack()
         refresh_btn.place(x=400, y=40)
 
@@ -85,13 +86,30 @@ class Interface:
                           command=self.set_help)
         help_btn.pack()
         help_btn.place(x=400, y=80)
-    
+
+        score_label = Label(self.root, text='Счёт:', background='light gray', font=('Arial', 18))
+        score_label.pack()
+        score_label.place(x=400, y=150)
+
+        self.score_var.set('0')
+        score_label = Label(self.root, textvariable=self.score_var, background='light gray', font=('Arial', 18),
+                            fg='blue')
+        score_label.pack()
+        score_label.place(x=420, y=180)
+
     def set_help(self):
         """Добавить подсветку существующего сета"""
 
+        self.game.help_use = True
         self.cancel_help_highlight()
         for card_ind in random.choice(self.game.all_sets):
             self.game.all_buttons[card_ind]['bg'] = 'blue'
+
+    def refresh(self):
+
+        self.cancel_highlight()
+        self.game.result = []
+        AllCards(self.game).reshuffle()
 
     def cancel_highlight(self):
         """Убрать подсветку у всех кнопок"""
@@ -110,4 +128,4 @@ class Interface:
 
     def finish_message(self):
 
-        messagebox.showinfo('Игра окончена', 'Поздравляю, вы справились!')
+        messagebox.showinfo('Игра окончена', f'Поздравляю, вы смогли найти {self.game.score} сетов!')

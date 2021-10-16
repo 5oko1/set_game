@@ -16,6 +16,8 @@ class GameBase:
         self.all_buttons = []
         self.root = None
         self.all_sets = []
+        self.score = 0
+        self.help_use = False
 
         pygame.mixer.init()
         self.correct = pygame.mixer.Sound("audio/correct.wav")
@@ -31,6 +33,7 @@ class GameBase:
         if GameSet().check_set(*self.result):
             print('Верно!')
             self.correct.play()
+            self.raise_score()
             self.all_cards.delete_cards_on_table(*self.result)
             if self.all_cards.open_new_cards() == 'Finish':
                 self.end_game()
@@ -41,6 +44,13 @@ class GameBase:
 
         self.interface.cancel_highlight()
         self.result = []
+
+    def raise_score(self):
+
+        if not self.help_use:
+            self.score += 1
+            self.interface.score_var.set(str(self.score))
+        self.help_use = False
 
     def end_game(self):
         self.interface.finish_message()
