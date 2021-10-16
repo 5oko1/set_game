@@ -81,7 +81,7 @@ class Interface:
                                                         master=frame, bd=4))
 
         refresh_btn = Button(self.root, text='Обновить', bd=4, width=10,
-                             height=1, command=AllCards(self.game).reshafle)
+                             height=1, command=AllCards(self.game).reshuffle)
         refresh_btn.pack()
         refresh_btn.place(x=400, y=40)
 

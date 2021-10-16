@@ -48,20 +48,23 @@ class AllCards:
     def __init__(self, game):
         self.game = game
 
-    def generate_new_sequence(self):
+    @staticmethod
+    def generate_new_sequence():
         """Возвращает случайную последовательность из всех карт в колоде"""
+
+        sequence = []
 
         for color in 'red', 'green', 'blue':
             for shape in 'circle', 'square', 'wave':
                 for fill in 'empty', 'strip', 'fill':
                     for amount in 1, 2, 3:
-                        self.game.sequence.append(Card(color, shape,
-                                                       fill, amount))
+                        sequence.append(Card(color, shape, fill, amount))
 
-        random.shuffle(self.game.sequence)
+        random.shuffle(sequence)
+        return sequence
 
     def get_next_card(self):
-        """Забирает случайную карту из колоды"""
+        """Забирает карту из колоды"""
 
         if len(self.game.sequence) > 0:
             return self.game.sequence.pop()
@@ -80,7 +83,7 @@ class AllCards:
         self.find_solutions()
         self.get_card_info()
 
-    def reshafle(self):
+    def reshuffle(self):
         """Перетасовать колоду: убирает карты со стола в колоду и выкладыает случайные новые карты"""
 
         self.game.sequence = list(itertools.chain(self.game.sequence,

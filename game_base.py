@@ -9,7 +9,6 @@ class GameBase:
     def __init__(self):
         """Инициализируем основные компоненты игры и создаём окно интерфейса"""
 
-        self.sequence = []
         self.open_cards = [0, 0, 0, 0,
                            0, 0, 0, 0,
                            0, 0, 0, 0]
@@ -25,6 +24,7 @@ class GameBase:
         self.interface = Interface(self)
         self.all_images = Images().get_images()
         self.all_cards = AllCards(self)
+        self.sequence = self.all_cards.generate_new_sequence()
 
     def check_result(self):
 
@@ -37,7 +37,7 @@ class GameBase:
                 self.all_cards.fill_open_cards()
                 # Доработать! В конце игры зациклится
                 while not self.all_cards.game.all_sets:
-                    self.all_cards.reshafle()
+                    self.all_cards.reshuffle()
             else:
                 print('Ошибка!')
                 self.wrong.play()
