@@ -1,4 +1,4 @@
-from tkinter import Tk, Button, Frame
+from tkinter import Tk, Button, Frame, messagebox
 from cards import AllCards
 import random
 
@@ -107,3 +107,7 @@ class Interface:
             if button['bg'] == 'blue':
                 button['bg'] = 'SystemButtonFace'
                 button.state = False
+
+    def finish_message(self):
+
+        messagebox.showinfo('Игра окончена', 'Поздравляю, вы справились!')

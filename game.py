@@ -4,7 +4,7 @@ from game_base import GameBase
 def new_game():
 
     game_base = GameBase()
-    game_base.all_cards.fill_open_cards()
+    game_base.all_cards.open_new_cards()
     game_base.root.mainloop()
 
 

@@ -77,21 +77,36 @@ class AllCards:
         for card_ind in range(12):
             if self.game.open_cards[card_ind] == 0:
                 card = self.get_next_card()
-                card.position = card_ind
+                # card.position = card_ind
                 self.game.open_cards[card_ind] = card
 
-        self.find_solutions()
-        self.get_card_info()
-
     def reshuffle(self):
-        """Перетасовать колоду: убирает карты со стола в колоду и выкладыает случайные новые карты"""
+        """Перемешать карты. Метод для интерфейсного вызова игроком через кнопку"""
+
+        self.put_cards_into_deck()
+        self.open_new_cards()
+
+    def put_cards_into_deck(self):
+        """Убрать карты в колоду"""
 
         self.game.sequence = list(itertools.chain(self.game.sequence,
                                                   self.game.open_cards))
         self.game.open_cards = [0, 0, 0, 0,
                                 0, 0, 0, 0,
                                 0, 0, 0, 0]
+
+    def open_new_cards(self):
+
         self.fill_open_cards()
+        if not self.find_solutions():
+            self.put_cards_into_deck()
+            if self.find_solution_in_deck():
+                self.fill_open_cards()
+                self.find_solutions()
+            else:
+                return "Finish"
+
+        self.get_card_info()
 
     def find_solutions(self):
 
@@ -110,6 +125,30 @@ class AllCards:
                                                    third_card_ind))
 
         return bool(self.game.all_sets)
+
+    def find_solution_in_deck(self):
+        game_set = GameSet()
+        cards_amount = len(self.game.sequence)
+
+        for first_card_ind in range(cards_amount-1):
+            for second_card_ind in range(first_card_ind+1, cards_amount):
+                for third_card_ind in range(second_card_ind+1, cards_amount):
+                    if game_set.check_set(self.game.sequence[first_card_ind],
+                                          self.game.sequence[second_card_ind],
+                                          self.game.sequence[third_card_ind]):
+                        self.get_set_from_deck(self.game.sequence[first_card_ind],
+                                               self.game.sequence[second_card_ind],
+                                               self.game.sequence[third_card_ind])
+                        return True
+        return False
+
+    def get_set_from_deck(self, first_el, second_el, third_el):
+
+        for position, element in enumerate((first_el, second_el, third_el)):
+            self.game.open_cards[position] = element
+            self.game.sequence.remove(element)
+        
+        random.shuffle(self.game.open_cards)
 
     def delete_cards_on_table(self, *cards):
         """Убрать карты в сброс"""

@@ -28,19 +28,20 @@ class GameBase:
 
     def check_result(self):
 
-        if len(self.result) == 3:
+        if GameSet().check_set(*self.result):
+            print('Верно!')
+            self.correct.play()
+            self.all_cards.delete_cards_on_table(*self.result)
+            if self.all_cards.open_new_cards() == 'Finish':
+                self.end_game()
+                return
+        else:
+            print('Ошибка!')
+            self.wrong.play()
 
-            if GameSet().check_set(*self.result):
-                print('Верно!')
-                self.correct.play()
-                self.all_cards.delete_cards_on_table(*self.result)
-                self.all_cards.fill_open_cards()
-                # Доработать! В конце игры зациклится
-                while not self.all_cards.game.all_sets:
-                    self.all_cards.reshuffle()
-            else:
-                print('Ошибка!')
-                self.wrong.play()
+        self.interface.cancel_highlight()
+        self.result = []
 
-            self.interface.cancel_highlight()
-            self.result = []
+    def end_game(self):
+        self.interface.finish_message()
+        self.root.destroy()
