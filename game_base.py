@@ -1,6 +1,7 @@
 from cards import GameSet, AllCards
 from card_button import Interface
 from set_cards.cards_pic import Images
+from datetime import datetime
 import pygame
 
 
@@ -9,9 +10,12 @@ class GameBase:
     def __init__(self):
         """Инициализируем основные компоненты игры и создаём окно интерфейса"""
 
+        self.play = True
         self.open_cards = [0, 0, 0, 0,
                            0, 0, 0, 0,
                            0, 0, 0, 0]
+
+        self.start_time = datetime.now()
         self.result = []
         self.all_buttons = []
         self.root = None
@@ -36,6 +40,7 @@ class GameBase:
             self.raise_score()
             self.all_cards.delete_cards_on_table(*self.result)
             if self.all_cards.open_new_cards() == 'Finish':
+                self.play = False
                 self.end_game()
                 return
         else:

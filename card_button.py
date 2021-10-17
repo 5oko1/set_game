@@ -1,4 +1,5 @@
 from tkinter import Tk, Button, Frame, messagebox, StringVar, Label
+from datetime import datetime
 from cards import AllCards
 import random
 
@@ -43,7 +44,14 @@ class Interface:
     def __init__(self, game):
         self.game = game
         self.root = self.game.root = self.create_window()
+
         self.score_var = StringVar()
+        self.score_var.set('0')
+
+        self.timer_var = StringVar()
+        self.timer_var.set('00:00')
+        self.root.after(1000, self.update_timer)
+
         self.create_buttons()
 
     @staticmethod
@@ -87,15 +95,28 @@ class Interface:
         help_btn.pack()
         help_btn.place(x=400, y=80)
 
+        timer = Label(self.root, textvariable=self.timer_var, background='light gray', font=('Arial', 18))
+        timer.pack()
+        timer.place(x=400, y=155)
+
         score_label = Label(self.root, text='Счёт:', background='light gray', font=('Arial', 18))
         score_label.pack()
-        score_label.place(x=400, y=150)
+        score_label.place(x=400, y=190)
 
-        self.score_var.set('0')
-        score_label = Label(self.root, textvariable=self.score_var, background='light gray', font=('Arial', 18),
-                            fg='blue')
-        score_label.pack()
-        score_label.place(x=420, y=180)
+        score_amount = Label(self.root, textvariable=self.score_var, background='light gray', font=('Arial', 18),
+                             fg='blue')
+        score_amount.pack()
+        score_amount.place(x=420, y=220)
+
+    def update_timer(self):
+
+        current_time = datetime.now()
+        difference = current_time - self.game.start_time
+        diff_seconds = int(difference.total_seconds())
+        self.game.session_time = f'{diff_seconds//60:0>2d}:{diff_seconds%60:0>2d}'
+        if self.game.play:
+            self.timer_var.set(self.game.session_time)
+            self.root.after(1000, self.update_timer)
 
     def set_help(self):
         """Добавить подсветку существующего сета"""
@@ -128,4 +149,5 @@ class Interface:
 
     def finish_message(self):
 
-        messagebox.showinfo('Игра окончена', f'Поздравляю, вы смогли найти {self.game.score} сетов!')
+        messagebox.showinfo('Игра окончена', f'Поздравляю, вы смогли найти {self.game.score} сетов!\n'
+                                             f'Ваше время составило {self.game.session_time}')
