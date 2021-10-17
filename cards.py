@@ -77,12 +77,12 @@ class AllCards:
         for card_ind in range(12):
             if self.game.open_cards[card_ind] == 0:
                 card = self.get_next_card()
-                # card.position = card_ind
                 self.game.open_cards[card_ind] = card
 
     def reshuffle(self):
         """Перемешать карты. Метод для интерфейсного вызова игроком через кнопку"""
 
+        self.game.help_use = False
         self.put_cards_into_deck()
         self.open_new_cards()
 
